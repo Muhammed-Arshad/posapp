@@ -8,6 +8,8 @@ class HomeProvider extends ChangeNotifier {
   TextEditingController billCon = TextEditingController();
   TextEditingController amountCstPaid = TextEditingController(text: '0.0');
 
+  TextEditingController amountRcvd = TextEditingController(text: '0.0');
+
   String billNo = "";
   double totalPrice = 0.0;
   double balanceAmount = 0.0;
