@@ -260,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                             width: w*0.23,
                             child: Column(
                               children: [
-                                cardContainer('Sub Total','100'),
+                                cardContainer('Sub Total','100',),
                                 cardContainer('Bill Disc','100'),
                                 cardContainer('Total','100'),
                                 cardContainer('Taxable','100'),
@@ -273,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                             width: w*0.23,
                             child: Column(
                               children: [
-                                cardContainer('Net Amount','100'),
+                                cardContainer('Net Amount','100',textBigCheck: true,bgColor: Colors.blueAccent),
                                 cardContainer('Recvd Amt','100'),
                                 cardContainer('Balance','100'),
                                 cardContainer('Item Disc','100'),
@@ -420,22 +420,32 @@ class _HomePageState extends State<HomePage> {
     );});
   }
 
-  Widget cardContainer(String text,String price){
+  Widget cardContainer(String text,String price, {bool textBigCheck = false,Color bgColor = Colors.blueGrey}){
+
+    final w = MediaQuery.of(context).size.width;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomTextWidget().customTextB(text),
-        Card(
-            child: Container(
-                margin: const EdgeInsets.all(3.0),
-                width: MediaQuery.of(context).size.width*0.1,
-                height: 20,
-                child: Center(
-                  child: Text(price,
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                )
-            ))
+        Container(
+            height: 30,
+            width: MediaQuery.of(context).size.width*0.1,
+            decoration: BoxDecoration(
+                color: bgColor),
+            child: Center(child: textBigCheck?CustomTextWidget().customTextBL(price):Text(price,style: TextStyle(color: Colors.white),))
+        ),
+        // Card(
+        //     child: Container(
+        //         margin: const EdgeInsets.all(3.0),
+        //         width: MediaQuery.of(context).size.width*0.1,
+        //         height: 20,
+        //         child: Center(
+        //           child: Text(price,
+        //             style: const TextStyle(fontSize: 15),
+        //           ),
+        //         )
+        //     ))
       ],
     );
   }

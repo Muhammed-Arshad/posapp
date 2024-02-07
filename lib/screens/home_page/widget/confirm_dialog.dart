@@ -40,7 +40,7 @@ class ConfirmDialog extends StatelessWidget {
         ),
         padding: EdgeInsets.all(20.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               height: 800,
@@ -105,6 +105,25 @@ class ConfirmDialog extends StatelessWidget {
                               color: Colors.green,
                               child: Center(
                                 child: Text('Received By Cash'),
+                              ),
+                            ),
+                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
+                          ],
+                        ),
+                      ),
+                      width15,
+                      Container(
+                        height: 69,
+                        width: w>500 ?550/4:w / 5,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Column(
+                          children: [
+                            Container(
+                              color: Colors.green,
+                              child: Center(
+                                child: Text(''),
                               ),
                             ),
                             TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
@@ -194,93 +213,131 @@ class ConfirmDialog extends StatelessWidget {
                     ],
                   ),
                   height30,
-                  Container(
-                    height: 300,
-                    width: 300,
-                    child: GridView(
-                    physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 1.5
-                            ),
-                            children: [
-                              buttonContainer('7', bgClr: Color(0xfff0f0f0), onTap: (){
-                    // provider.clickedButton('7');
-                              }),
-                              buttonContainer('8', bgClr: Color(0xfff0f0f0), onTap: (){
-                    // provider.clickedButton('8');
-                              }),
-                              buttonContainer('9', bgClr: Color(0xfff0f0f0), onTap: (){
-                    // provider.clickedButton('9');
-                              }),
-                              buttonContainer('4', bgClr: Color(0xfff0f0f0), onTap: (){
-                    // provider.clickedButton('4');
-                              }),
-                              buttonContainer('5', bgClr: Color(0xfff0f0f0), onTap: (){
-                    // provider.clickedButton('5');
-                              }),
-                              buttonContainer('6', bgClr: Color(0xfff0f0f0), onTap: (){
-                    // provider.clickedButton('6');
-                              }),
-                              buttonContainer('1', bgClr: Color(0xfff0f0f0), onTap: (){
-                                // provider.clickedButton('1');
-                              }),
-                              buttonContainer('2', bgClr: Color(0xfff0f0f0), onTap: (){
-                                // provider.clickedButton('2');
-                              }),
-                              buttonContainer('3', bgClr: Color(0xfff0f0f0), onTap: (){
-                                // provider.clickedButton('3');
-                              }),
-                              buttonContainer('0', bgClr: Color(0xfff0f0f0), onTap: (){
-                                // provider.clickedButton('1');
-                              }),
-                              buttonContainer('.', bgClr: Color(0xfff0f0f0), onTap: (){
-                                // provider.clickedButton('2');
-                              }),
-                              buttonContainer('00', bgClr: Color(0xfff0f0f0), onTap: (){
-                                // provider.clickedButton('3');
-                              }),
-
-                            ]),
-                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InkWell(
-                        onTap: (){
-                        },
-                        child: Container(
-                          width: 150,
-                          margin: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Colors.teal,
-                            borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2, //                   <--- border width here
-                            ),
+                      Column(
+                        children: [
+                          Container(
+                            height: 300,
+                            width: 300,
+                            child: GridView(
+                            physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    childAspectRatio: 1.5
+                                    ),
+                                    children: [
+                                      buttonContainer('7', bgClr: Color(0xfff0f0f0), onTap: (){
+                            // provider.clickedButton('7');
+                                      }),
+                                      buttonContainer('8', bgClr: Color(0xfff0f0f0), onTap: (){
+                            // provider.clickedButton('8');
+                                      }),
+                                      buttonContainer('9', bgClr: Color(0xfff0f0f0), onTap: (){
+                            // provider.clickedButton('9');
+                                      }),
+                                      buttonContainer('4', bgClr: Color(0xfff0f0f0), onTap: (){
+                            // provider.clickedButton('4');
+                                      }),
+                                      buttonContainer('5', bgClr: Color(0xfff0f0f0), onTap: (){
+                            // provider.clickedButton('5');
+                                      }),
+                                      buttonContainer('6', bgClr: Color(0xfff0f0f0), onTap: (){
+                            // provider.clickedButton('6');
+                                      }),
+                                      buttonContainer('1', bgClr: Color(0xfff0f0f0), onTap: (){
+                                        // provider.clickedButton('1');
+                                      }),
+                                      buttonContainer('2', bgClr: Color(0xfff0f0f0), onTap: (){
+                                        // provider.clickedButton('2');
+                                      }),
+                                      buttonContainer('3', bgClr: Color(0xfff0f0f0), onTap: (){
+                                        // provider.clickedButton('3');
+                                      }),
+                                      buttonContainer('0', bgClr: Color(0xfff0f0f0), onTap: (){
+                                        // provider.clickedButton('1');
+                                      }),
+                                      buttonContainer('.', bgClr: Color(0xfff0f0f0), onTap: (){
+                                        // provider.clickedButton('2');
+                                      }),
+                                      buttonContainer('00', bgClr: Color(0xfff0f0f0), onTap: (){
+                                        // provider.clickedButton('3');
+                                      }),
+
+                                    ]),
                           ),
-                          height: 60,
-                          child: Center(child: CustomTextWidget().customTextB('OK',color: Colors.white)),
-                        ),
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: (){
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  width: 150,
+                                  margin: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.shade300,
+                                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2, //                   <--- border width here
+                                    ),
+                                  ),
+                                  height: 60,
+                                  child: Center(child: CustomTextWidget().customTextB('CANCEL',color: Colors.white)),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: (){
+                                },
+                                child: Container(
+                                  width: 150,
+                                  margin: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.teal,
+                                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2, //                   <--- border width here
+                                    ),
+                                  ),
+                                  height: 60,
+                                  child: Center(child: CustomTextWidget().customTextB('OK',color: Colors.white)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      InkWell(
-                        onTap: (){
-                        },
-                        child: Container(
-                          width: 150,
-                          margin: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Colors.teal,
-                            borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2, //                   <--- border width here
-                            ),
+                      Column(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: w>500 ?550/2.5:w / 4,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,),
+                            child: Center(child: Text('CASH'))
                           ),
-                          height: 60,
-                          child: Center(child: CustomTextWidget().customTextB('CANCEL',color: Colors.white)),
-                        ),
+                          height10,
+                          Container(
+                              height: 30,
+                              width: w>500 ?550/2.5:w / 4,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,),
+                              child: Center(child: Text('CARD'))
+                          ),
+                          height10,
+                          Container(
+                              height: 30,
+                              width: w>500 ?550/2.5:w / 4,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey),
+                              child: Center(child: Text('CASH - CARD'))
+                          ),
+                        ],
                       ),
                     ],
                   )
