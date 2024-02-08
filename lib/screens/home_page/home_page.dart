@@ -18,26 +18,6 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-List<Map<String, dynamic>> tableData = [
-  {'No': 1, 'itemCode': 'A001', 'itemName': 'Item 1', 'Quantity': 1, 'amount': 20, 'totalAmount': 0},
-  {'No': 2, 'itemCode': 'A002', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 3, 'itemCode': 'A003', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 35, 'totalAmount': 0},
-  {'No': 4, 'itemCode': 'A004', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 46.5, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
-  // Add more rows as needed
-];
-
 
 
 
@@ -48,15 +28,6 @@ class _HomePageState extends State<HomePage> {
 
     var h = MediaQuery.sizeOf(context).height;
     var w = MediaQuery.sizeOf(context).width;
-
-    print(h);
-
-
-
-    // WidgetsBinding.instance?.addPostFrameCallback((_) {
-    //   // Your code here
-    // });
-
 
 
     return Consumer<HomeProvider>(builder: (context, provider, child) {
@@ -137,10 +108,8 @@ class _HomePageState extends State<HomePage> {
         )),
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              // mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
@@ -170,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                                   DataColumn(label: text.customTextB('Total Price')),
                                   DataColumn(label: text.customTextB('Actions')),
                                 ],
-                                rows: tableData.map(
+                                rows: provider.tableData.map(
                                       (data) => DataRow(
                                         color: MaterialStateProperty.all<Color>(Colors.orange.shade100),
                                           cells: [
@@ -195,9 +164,14 @@ class _HomePageState extends State<HomePage> {
                                               child: IconButton(
                                                 icon: Icon(Icons.add,color: Colors.white,),
                                                 onPressed: () {
-                                                  setState(() {
-                                                    data['Quantity']++;
-                                                  });
+                                                  // setState(() {
+                                                  data['Quantity']++;
+                                                  // });
+
+                                                  provider.getPriceTotal(provider.tableData);
+
+                                                  // provider.totalAmount[0].subTotal = '100';
+
                                                 },
                                               ),
                                             ),
@@ -211,9 +185,11 @@ class _HomePageState extends State<HomePage> {
                                               return;
                                             }
 
-                                            setState(() {
+                                            // setState(() {
                                               data['Quantity']--;
-                                            });
+                                            // });
+
+                                            provider.getPriceTotal(provider.tableData);
                                           },
                                         ),
                                         Padding(
@@ -228,11 +204,8 @@ class _HomePageState extends State<HomePage> {
                                               child: IconButton(
                                                 icon: const Icon(Icons.close),
                                                 onPressed: () {
-                                                  print(tableData.length);
-                                                  setState(() {
-                                                    tableData.remove(data);
-                                                  });
-                                                  print(tableData.length);
+                                                  provider.tableData.remove(data);
+                                                    provider.getPriceTotal(provider.tableData);
                                                 },
                                               ),
                                             ),
@@ -260,11 +233,12 @@ class _HomePageState extends State<HomePage> {
                             width: w*0.23,
                             child: Column(
                               children: [
-                                cardContainer('Sub Total','100',),
-                                cardContainer('Bill Disc','100'),
-                                cardContainer('Total','100'),
-                                cardContainer('Taxable','100'),
-                                cardContainer('VAT @5%','100'),
+                                cardContainer('Sub Total',
+                                  provider.totalAmount.isEmpty?'':provider.totalAmount[0].subTotal.toString(),),
+                                cardContainer('Bill Disc',provider.totalAmount.isEmpty?'':provider.totalAmount[0].billDisc.toString()),
+                                cardContainer('Total',provider.totalAmount.isEmpty?'':provider.totalAmount[0].total.toString()),
+                                cardContainer('Taxable',provider.totalAmount.isEmpty?'':provider.totalAmount[0].taxable.toString()),
+                                cardContainer('VAT @5%',provider.totalAmount.isEmpty?'':provider.totalAmount[0].vat.toString()),
                               ],
                             ),
                           ),
@@ -273,11 +247,16 @@ class _HomePageState extends State<HomePage> {
                             width: w*0.23,
                             child: Column(
                               children: [
-                                cardContainer('Net Amount','100',textBigCheck: true,bgColor: Colors.blueAccent),
-                                cardContainer('Recvd Amt','100'),
-                                cardContainer('Balance','100'),
-                                cardContainer('Item Disc','100'),
-                                cardContainer('Revcd Curr.','100'),
+                                cardContainer('Net Amount',provider.totalAmount.isEmpty?'':
+                                provider.totalAmount[0].netAmount.toString(),textBigCheck: true,bgColor: Colors.blueAccent),
+                                cardContainer('Recvd Amt',provider.totalAmount.isEmpty?'':
+                                provider.totalAmount[0].rcvdAmount.toString()),
+                                cardContainer('Balance',provider.totalAmount.isEmpty?'':
+                                provider.totalAmount[0].balance.toString()),
+                                cardContainer('Item Disc',provider.totalAmount.isEmpty?'':
+                                provider.totalAmount[0].itemDisc.toString()),
+                                cardContainer('Recvd Curr.',provider.totalAmount.isEmpty?'':
+                                provider.totalAmount[0].recvdCurr.toString()),
                               ],
                             ),
                           ),
@@ -297,10 +276,14 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const <Widget>[
+                          children: <Widget>[
                             Expanded(
                               flex: 1,
                               child: TextField(
+                                controller: provider.barcodeCheck,
+                                onTap: (){
+                                  provider.activeCtrl = provider.barcodeCheck;
+                                },
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: 'Sales Ret'
@@ -355,8 +338,7 @@ class _HomePageState extends State<HomePage> {
                               provider.clickedButton('6');
                             }),
                             buttonContainer('CLEAR', textClr: Colors.white,bgClr: Colors.red, onTap: (){
-                              provider.billCon.clear();
-                              provider.billNo = '';
+                              provider.activeCtrl.clear();
                             }),
 
                             buttonContainer('1', bgClr: Color(0xfff0f0f0), onTap: (){
@@ -387,12 +369,21 @@ class _HomePageState extends State<HomePage> {
                         height20,
                         InkWell(
                           onTap: (){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ConfirmDialog(); // Custom dialog content
-                              },
-                            );
+
+                            if(provider.activeCtrl.text.isNotEmpty){
+                              provider.addProduct();
+                            }else{
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ConfirmDialog(); // Custom dialog content
+                                },
+                              );
+                            }
+
+                            // provider.tableData.add({'No': 1, 'itemCode': 'A001', 'itemName': 'Item 1', 'Quantity': 1, 'amount': 20, 'totalAmount': 0});
+
+
                           },
                           child: Container(
                             margin: EdgeInsets.all(5),

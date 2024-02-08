@@ -5,11 +5,16 @@ List<TotalPriceModel> totalPriceModelFromJson(String str) => List<TotalPriceMode
 String totalPriceModelToJson(List<TotalPriceModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TotalPriceModel {
-  String? subTotal;
+  String? subTotal = '0.00';
   String? billDisc;
   String? total;
   String? taxable;
   String? vat;
+  String? netAmount = '0.00';
+  String? rcvdAmount;
+  String? balance;
+  String? itemDisc;
+  String? recvdCurr;
 
   TotalPriceModel({
     this.subTotal,
@@ -17,6 +22,11 @@ class TotalPriceModel {
     this.total,
     this.taxable,
     this.vat,
+    this.netAmount,
+    this.rcvdAmount,
+    this.balance,
+    this.itemDisc,
+    this.recvdCurr,
   });
 
   factory TotalPriceModel.fromJson(Map<String, dynamic> json) => TotalPriceModel(
@@ -25,6 +35,11 @@ class TotalPriceModel {
     total: json["total"],
     taxable: json["taxable"],
     vat: json["vat"],
+    netAmount: json["netAmount"],
+    rcvdAmount: json["rcvdAmount"],
+    balance: json["balance"],
+    itemDisc: json["itemDisc"],
+    recvdCurr: json["recvdCurr"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -33,5 +48,10 @@ class TotalPriceModel {
     "total": total,
     "taxable": taxable,
     "vat": vat,
+    "netAmount": netAmount,
+    "rcvdAmount": rcvdAmount,
+    "balance": balance,
+    "itemDisc": itemDisc,
+    "recvdCurr": recvdCurr,
   };
 }

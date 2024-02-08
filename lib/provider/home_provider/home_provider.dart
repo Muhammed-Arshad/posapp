@@ -8,11 +8,40 @@ class HomeProvider extends ChangeNotifier {
   TextEditingController billCon = TextEditingController();
   TextEditingController amountCstPaid = TextEditingController(text: '0.0');
 
+  TextEditingController barcodeCheck = TextEditingController();
+  late TextEditingController activeCtrl = barcodeCheck;
+
   TextEditingController amountRcvd = TextEditingController(text: '0.0');
+
+
+  List<Map<String, dynamic>> tableData = [
+    {'No': 1, 'itemCode': 'A001', 'itemName': 'Item 1', 'Quantity': 1, 'amount': 20, 'totalAmount': 0},
+    {'No': 2, 'itemCode': 'A002', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 3, 'itemCode': 'A003', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 35, 'totalAmount': 0},
+    {'No': 4, 'itemCode': 'A004', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 46.5, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    {'No': 5, 'itemCode': 'A005', 'itemName': 'Item 2', 'Quantity': 1, 'amount': 30, 'totalAmount': 0},
+    // Add more rows as needed
+  ];
 
   String billNo = "";
   double totalPrice = 0.0;
   double balanceAmount = 0.0;
+
+  addProduct(){
+    tableData.add({'No': 1, 'itemCode': 'A001', 'itemName': 'Item 1', 'Quantity': 1, 'amount': 20, 'totalAmount': 0});
+    getPriceTotal(tableData);
+  }
 
   getTotalPrice(List<Map<String, dynamic>> tableData){
     totalPrice = 0;
@@ -23,8 +52,9 @@ class HomeProvider extends ChangeNotifier {
   }
 
   clickedButton(String num){
-    billNo = '$billNo$num';
-    billCon.text = billNo;
+    // billNo = '$billNo$num';
+    // billCon.text = billNo;
+    activeCtrl.text = activeCtrl.text + num;
     notifyListeners();
   }
 
@@ -32,11 +62,27 @@ class HomeProvider extends ChangeNotifier {
 
   getTotalAmount(){
     totalAmount.add(TotalPriceModel(
-      subTotal: '10',
-      billDisc: '20',
-      total: '100',
-      taxable: '30',
-      vat: '5'));
+      subTotal: '0.00',
+      billDisc: '0.00',
+      total: '0.00',
+      taxable: '0.00',
+      vat: '0.00',
+      netAmount: '0.00',
+      rcvdAmount: '0.00',
+      balance: '0.00',
+      itemDisc: '0.00',
+      recvdCurr: '0.00'));
+    notifyListeners();
+  }
+
+  getPriceTotal(List<Map<String, dynamic>> tableData){
+    var total = 0.0;
+    for(var e in tableData){
+      total = total + (e['amount'] * e['Quantity']);
+    }
+    totalAmount[0].subTotal = total.toString();
+    totalAmount[0].netAmount = total.toString();
+    totalAmount[0].total = total.toString();
     notifyListeners();
   }
 
