@@ -31,7 +31,7 @@ class ConfirmDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Container(
-        width: 1300,
+        // width: 1300,
         height: 800,
         decoration: BoxDecoration(
             color: Colors.white,
@@ -69,7 +69,7 @@ class ConfirmDialog extends StatelessWidget {
                                 child: Text('Received'),
                               ),
                             ),
-                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
+                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvdCtrl,context: context,focusNode: provider.amountRcvdFocus),
                           ],
                         ),
                       ),
@@ -88,7 +88,7 @@ class ConfirmDialog extends StatelessWidget {
                                 child: Text('Change'),
                               ),
                             ),
-                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
+                            TextStyles().onlyNumberTFFF(cont: provider.amountChangeCtrl,context: context),
                           ],
                         ),
                       ),
@@ -107,7 +107,7 @@ class ConfirmDialog extends StatelessWidget {
                                 child: Text('Received By Cash'),
                               ),
                             ),
-                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
+                            TextStyles().onlyNumberTFFF(cont: provider.rcvdByCashCtrl,context: context),
                           ],
                         ),
                       ),
@@ -126,7 +126,7 @@ class ConfirmDialog extends StatelessWidget {
                                 child: Text(''),
                               ),
                             ),
-                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
+                            TextStyles().onlyNumberTFFF(cont: provider.sampleCtrl,context: context),
                           ],
                         ),
                       ),
@@ -149,7 +149,7 @@ class ConfirmDialog extends StatelessWidget {
                                 child: Text('Currency'),
                               ),
                             ),
-                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
+                            TextStyles().onlyNumberTFFF(cont: provider.currencyCtrl,context: context),
                           ],
                         ),
                       ),
@@ -168,7 +168,7 @@ class ConfirmDialog extends StatelessWidget {
                                 child: Text('Rate'),
                               ),
                             ),
-                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
+                            TextStyles().onlyNumberTFFF(cont: provider.rateCtrl,context: context),
                           ],
                         ),
                       ),
@@ -187,7 +187,7 @@ class ConfirmDialog extends StatelessWidget {
                                 child: Text('Received Curr'),
                               ),
                             ),
-                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
+                            TextStyles().onlyNumberTFFF(cont: provider.rcvdCurrCtrl,context: context),
                           ],
                         ),
                       ),
@@ -206,7 +206,7 @@ class ConfirmDialog extends StatelessWidget {
                                 child: Text('Received by Card'),
                               ),
                             ),
-                            TextStyles().onlyNumberTFFF(cont: provider.amountRcvd,context: context),
+                            TextStyles().onlyNumberTFFF(cont: provider.rcvdByCardCtrl,context: context),
                           ],
                         ),
                       ),
@@ -231,40 +231,40 @@ class ConfirmDialog extends StatelessWidget {
                                     ),
                                     children: [
                                       buttonContainer('7', bgClr: Color(0xfff0f0f0), onTap: (){
-                            // provider.clickedButton('7');
+                            provider.clickedButton('7');
                                       }),
                                       buttonContainer('8', bgClr: Color(0xfff0f0f0), onTap: (){
-                            // provider.clickedButton('8');
+                            provider.clickedButton('8');
                                       }),
                                       buttonContainer('9', bgClr: Color(0xfff0f0f0), onTap: (){
-                            // provider.clickedButton('9');
+                            provider.clickedButton('9');
                                       }),
                                       buttonContainer('4', bgClr: Color(0xfff0f0f0), onTap: (){
-                            // provider.clickedButton('4');
+                            provider.clickedButton('4');
                                       }),
                                       buttonContainer('5', bgClr: Color(0xfff0f0f0), onTap: (){
-                            // provider.clickedButton('5');
+                            provider.clickedButton('5');
                                       }),
                                       buttonContainer('6', bgClr: Color(0xfff0f0f0), onTap: (){
-                            // provider.clickedButton('6');
+                            provider.clickedButton('6');
                                       }),
                                       buttonContainer('1', bgClr: Color(0xfff0f0f0), onTap: (){
-                                        // provider.clickedButton('1');
+                                        provider.clickedButton('1');
                                       }),
                                       buttonContainer('2', bgClr: Color(0xfff0f0f0), onTap: (){
-                                        // provider.clickedButton('2');
+                                        provider.clickedButton('2');
                                       }),
                                       buttonContainer('3', bgClr: Color(0xfff0f0f0), onTap: (){
-                                        // provider.clickedButton('3');
+                                        provider.clickedButton('3');
                                       }),
                                       buttonContainer('0', bgClr: Color(0xfff0f0f0), onTap: (){
-                                        // provider.clickedButton('1');
+                                        provider.clickedButton('0');
                                       }),
                                       buttonContainer('.', bgClr: Color(0xfff0f0f0), onTap: (){
-                                        // provider.clickedButton('2');
+                                        provider.clickedButton('.');
                                       }),
-                                      buttonContainer('00', bgClr: Color(0xfff0f0f0), onTap: (){
-                                        // provider.clickedButton('3');
+                                      buttonContainer('<', bgClr: Color(0xfff0f0f0), onTap: (){
+                                        provider.activeCtrl.clear();
                                       }),
 
                                     ]),
@@ -274,6 +274,7 @@ class ConfirmDialog extends StatelessWidget {
                               InkWell(
                                 onTap: (){
                                   Navigator.pop(context);
+                                  provider.clearAllCtrl();
                                 },
                                 child: Container(
                                   width: 150,
@@ -376,7 +377,7 @@ class ConfirmDialog extends StatelessWidget {
                           height: 40,
                           color: Colors.grey.shade200,
                           child: Center(
-                            child: ts.customTextBL('13.50'),
+                            child: ts.customTextBL(provider.totalAmount[0].netAmount.toString()),
                           ),
                         ),
                       ],

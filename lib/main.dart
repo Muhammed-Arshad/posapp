@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:posapp/provider/provider.dart';
 import 'package:posapp/screens/home_page/home_page.dart';
+import 'package:posapp/screens/on_boarding/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
           debugShowCheckedModeBanner: false,
-          home: const HomePage(),
+          home: const SplashScreen(),
         ));
   }
 }

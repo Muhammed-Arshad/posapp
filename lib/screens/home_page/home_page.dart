@@ -21,8 +21,23 @@ class HomePage extends StatefulWidget {
 
 
 
+
 class _HomePageState extends State<HomePage> {
   // class HomePage extends StatelessWidget {
+
+  @override
+  void initState() {
+    var provider = Provider.of<HomeProvider>(context, listen: false);
+
+    Future.delayed(Duration.zero).then((value) {
+      provider.getTotalAmount();
+    });
+
+    provider.activeCtrl.addListener(provider.getConfirmDialogBoxData);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -32,9 +47,9 @@ class _HomePageState extends State<HomePage> {
 
     return Consumer<HomeProvider>(builder: (context, provider, child) {
 
-      Future.delayed(Duration.zero).then((value) {
-        provider.getTotalAmount();
-      });
+      // Future.delayed(Duration.zero).then((value) {
+      //   print('ARSHAD LENGTH ${provider.totalAmount.length}');
+      // });
 
 
     return Scaffold(
