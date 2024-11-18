@@ -37,6 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   provider: ^6.1.1
   google_fonts: ^6.1.0
+  flutter_barcode_listener: ^0.1.4
+  visibility_detector: ^0.4.0+2
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +53,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  riverpod_generator: ^2.6.2
+  build_runner: ^2.4.13
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

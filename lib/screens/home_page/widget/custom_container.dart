@@ -18,18 +18,14 @@ Widget customContainer(String amount, {Color color = Colors.black}) {
 Widget buttonContainer(text,
     {Color textClr = Colors.black,
     Color bgClr = const Color(0xff00008b),
-    required Function onTap}) {
+    required VoidCallback onTap}) {
   return InkWell(
     splashColor: Colors.green,
-    onTap: () {
-      onTap();
-    },
+    // onTap: onTap,
     child: Padding(
       padding: const EdgeInsets.all(4.0),
       child: MaterialButton(
-        onPressed: () {
-          onTap();
-        },
+        onPressed: onTap,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15.0))),
         elevation: 5.0,

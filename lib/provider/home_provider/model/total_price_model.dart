@@ -1,28 +1,23 @@
-import 'dart:convert';
-
-List<TotalPriceModel> totalPriceModelFromJson(String str) => List<TotalPriceModel>.from(json.decode(str).map((x) => TotalPriceModel.fromJson(x)));
-
-String totalPriceModelToJson(List<TotalPriceModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TotalPriceModel {
-  String? subTotal = '0.00';
+  String? subTotal;
   String? billDisc;
   String? total;
   String? taxable;
   String? vat;
-  String? netAmount = '0.00';
+  String? netAmount;
   String? rcvdAmount;
   String? balance;
   String? itemDisc;
   String? recvdCurr;
 
   TotalPriceModel({
-    this.subTotal,
+    this.subTotal = '0.00',
     this.billDisc,
     this.total,
     this.taxable,
     this.vat,
-    this.netAmount,
+    this.netAmount = '0.00',
     this.rcvdAmount,
     this.balance,
     this.itemDisc,
@@ -54,4 +49,30 @@ class TotalPriceModel {
     "itemDisc": itemDisc,
     "recvdCurr": recvdCurr,
   };
+
+  TotalPriceModel copyWith({
+    String? subTotal,
+    String? billDisc,
+    String? total,
+    String? taxable,
+    String? vat,
+    String? netAmount,
+    String? rcvdAmount,
+    String? balance,
+    String? itemDisc,
+    String? recvdCurr,
+  }) {
+    return TotalPriceModel(
+      subTotal: subTotal ?? this.subTotal,
+      billDisc: billDisc ?? this.billDisc,
+      total: total ?? this.total,
+      taxable: taxable ?? this.taxable,
+      vat: vat ?? this.vat,
+      netAmount: netAmount ?? this.netAmount,
+      rcvdAmount: rcvdAmount ?? this.rcvdAmount,
+      balance: balance ?? this.balance,
+      itemDisc: itemDisc ?? this.itemDisc,
+      recvdCurr: recvdCurr ?? this.recvdCurr,
+    );
+  }
 }

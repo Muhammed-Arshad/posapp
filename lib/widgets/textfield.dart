@@ -9,28 +9,24 @@ import '../provider/home_provider/home_provider.dart';
 class TextStyles {
 
   onlyNumberTFFF({
+    bool readOnly = false,
+    VoidCallback? onTap,
+    ValueChanged<String>? onChanged,
     required TextEditingController cont,
     BuildContext? context,
     FocusNode? focusNode,
   }) {
-    var provider = Provider.of<HomeProvider>(context!, listen: false);
 
     return TextFormField(
+      readOnly: readOnly,
       controller: cont,
       focusNode: focusNode,
-      onTap: (){
-        // provider.activeCtrl = cont;
-        // cont = provider.activeCtrl;
-
+      onTap: onTap,
+      onTapOutside: (event) {
+        // FocusScope.of(context).unfocus();
+        focusNode?.requestFocus();
       },
-      onChanged: (val){
-
-        print('ABCD');
-
-        // cont =  provider.activeCtrl;
-        // provider.getConfirmDialogBoxData(val);
-
-      },
+      onChanged: onChanged,
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.blueGrey.shade200,
