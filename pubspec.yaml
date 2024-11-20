@@ -42,6 +42,7 @@ dependencies:
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
   equatable: ^2.0.5
+  data_table_2: ^2.5.15
 
 dev_dependencies:
   flutter_test:

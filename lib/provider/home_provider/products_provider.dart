@@ -1,25 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:posapp/provider/home_provider/model/product_model.dart';
+import 'package:posapp/provider/product_provider/all_products_provider.dart';
+import 'package:posapp/provider/product_provider/model/all_products.dart';
 
 class ProductNotifier extends StateNotifier<List<Product>>{
-  ProductNotifier(): super([
-    Product(
-      no: 1,
-      itemCode: 'A001',
-      itemName: 'Item 1',
-      quantity: 1,
-      amount: 20.0,
-      totalAmount: 20.0,
-    ),
-    Product(
-      no: 2,
-      itemCode: 'A002',
-      itemName: 'Item 2',
-      quantity: 2,
-      amount: 15.0,
-      totalAmount: 30.0,
-    ),
+  Ref ref;
+  ProductNotifier(this.ref): super([
+    // Product(
+    //   no: 1,
+    //   itemCode: 'A001',
+    //   itemName: 'Item 1',
+    //   quantity: 1,
+    //   amount: 20.0,
+    //   totalAmount: 20.0,
+    // ),
+    // Product(
+    //   no: 2,
+    //   itemCode: 'A002',
+    //   itemName: 'Item 2',
+    //   quantity: 2,
+    //   amount: 15.0,
+    //   totalAmount: 30.0,
+    // ),
   ]);
 
 
@@ -41,13 +44,32 @@ class ProductNotifier extends StateNotifier<List<Product>>{
       return;
     }
 
+    final product = ref.read(productByCodeProvider(barcode));
+
     var newProduct = Product(
       no: state.length + 1,
       itemCode: barcode,
-      itemName: 'New Item',
+      itemName: product.productName.toString(),
       quantity: 1,
-      amount: 100.0,
+      amount: product.amount,
       totalAmount: 100.0,
+      productType: product.productType
+    );
+
+    state = [...state, newProduct];
+  }
+
+  void addProduct(productCode){
+    final product = ref.read(productByCodeProvider(productCode));
+
+    var newProduct = Product(
+        no: state.length + 1,
+        itemCode: productCode,
+        itemName: product.productName.toString(),
+        quantity: 1,
+        amount: product.amount,
+        totalAmount: 100.0,
+        productType: product.productType
     );
 
     state = [...state, newProduct];
@@ -108,7 +130,8 @@ class ProductNotifier extends StateNotifier<List<Product>>{
 }
 
 final productProvider = StateNotifierProvider<ProductNotifier, List<Product>>((ref) {
-  return ProductNotifier();
+
+  return ProductNotifier(ref);
 });
 
 

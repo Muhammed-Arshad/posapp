@@ -5,6 +5,7 @@ import 'package:posapp/provider/home_provider/price_provider.dart';
 
 import '../../../provider/home_provider/model/product_model.dart';
 import '../../../provider/home_provider/products_provider.dart';
+import '../../../provider/product_provider/model/all_products.dart';
 import '../home_page.dart';
 
 class ProductTableWidget extends ConsumerWidget {
@@ -55,9 +56,13 @@ class ProductTableWidget extends ConsumerWidget {
                       ],
                       rows: product.map(
                             (data) => DataRow(
-                            color: WidgetStateProperty.all<Color>(Colors.orange.shade100),
+                            color:
+                            data.productType == ProductType.veg?
+                            WidgetStateProperty.all<Color>(Colors.green.shade100):
+                            WidgetStateProperty.all<Color>(Colors.orange.shade100),
                             cells: [
-                              DataCell(text.customTextB(data.no.toString())),
+                              DataCell(text.customTextB((product.indexOf(data) + 1).toString())),
+                              // DataCell(text.customTextB(data.no.toString())),
                               DataCell(text.customTextB(data.itemCode)),
                               DataCell(text.customTextB(data.itemName.toString().toUpperCase())),
                               DataCell(text.customTextB(data.quantity.toString())),

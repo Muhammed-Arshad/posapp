@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:posapp/provider/home_provider/model/total_price_model.dart';
 import 'package:posapp/provider/home_provider/products_provider.dart';
@@ -22,7 +21,7 @@ class PriceNotifier extends StateNotifier<TotalPriceModel>{
     double totalPrice = ref.read(productProvider.notifier).getTotalPrice();
 
     double vat = (totalPrice/100)*5;
-    double priceWithVat = vat + totalPrice;
+    // double priceWithVat = vat + totalPrice;
 
     state = state.copyWith(
       vat: vat.toString(),

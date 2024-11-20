@@ -6,6 +6,8 @@ import 'package:posapp/screens/home_page/home_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/home_provider/home_provider.dart';
+import '../login/login_page.dart';
+import '../product/products_table.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -18,8 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 1), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder:
+          // (BuildContext context) => ProductTableView()));
           (BuildContext context) => HomePage()));
     });
 

@@ -53,18 +53,17 @@ class PricesWidget extends ConsumerWidget {
   Widget cardContainer(context,String text,String price,
       {bool textBigCheck = false,Color bgColor = Colors.blueGrey}){
 
-
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomTextWidget().customTextB(text),
         Container(
-            height: 30,
+            height: 40,
             width: MediaQuery.sizeOf(context).width*0.1,
             decoration: BoxDecoration(
                 color: bgColor),
-            child: Center(child: textBigCheck?CustomTextWidget().customTextBL(price):Text(price,style: TextStyle(color: Colors.white),))
+            child: Center(child: textBigCheck?CustomTextWidget().
+            customTextBL(price):Text(price,style: TextStyle(color: Colors.white),))
         ),
         // Card(
         //     child: Container(
