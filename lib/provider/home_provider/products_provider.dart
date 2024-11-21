@@ -31,7 +31,8 @@ class ProductNotifier extends StateNotifier<List<Product>>{
     List<Product> updatedProducts = state.map((product) {
       if (product.itemCode == barcode) {
         productFound = true;
-        int updatedQuantity = product.quantity + 1;
+        double updatedQuantity = product.quantity + 1;
+
         return product.copyWith(
             quantity: updatedQuantity,
             totalAmount: updatedQuantity * product.amount);
@@ -50,10 +51,11 @@ class ProductNotifier extends StateNotifier<List<Product>>{
       no: state.length + 1,
       itemCode: barcode,
       itemName: product.productName.toString(),
-      quantity: 1,
+      quantity: product.quantity.toDouble(),
       amount: product.amount,
-      totalAmount: 100.0,
-      productType: product.productType
+      totalAmount: product.amount,
+      productType: product.productType,
+      productWeight: product.productWeight
     );
 
     state = [...state, newProduct];
@@ -84,10 +86,31 @@ class ProductNotifier extends StateNotifier<List<Product>>{
   void removeProductCount(Product targetProduct){
     List<Product> updatedProducts = state.map((product) {
       if(product.itemCode == targetProduct.itemCode && product.quantity > 1) {
-        int updatedQuantity = product.quantity - 1;
+        // double updatedQuantity = product.quantity - 1;
+
+        double updatedQuantity = 0;
+        double totalAmount = 0;
+
+        switch(targetProduct.productWeight){
+
+          case ProductWeight.g:
+            updatedQuantity = product.quantity - 100;
+            totalAmount = product.amount * (updatedQuantity/100);
+          case ProductWeight.kg:
+            updatedQuantity = product.quantity - 0.25;
+            totalAmount = product.amount* updatedQuantity;
+          case ProductWeight.ml:
+            updatedQuantity = product.quantity - 100;
+            totalAmount = product.amount * (updatedQuantity/100);
+          case ProductWeight.l:
+            updatedQuantity = product.quantity - 0.25;
+            totalAmount = product.amount* updatedQuantity;
+        }
+
         return product.copyWith(
             quantity: updatedQuantity,
-            totalAmount: updatedQuantity * product.amount);
+            totalAmount: totalAmount);
+            // totalAmount: updatedQuantity * product.amount);
       }else {
         return product;
       }
@@ -99,16 +122,58 @@ class ProductNotifier extends StateNotifier<List<Product>>{
   void addProductCount(Product targetProduct){
     List<Product> updatedProducts = state.map((product) {
       if(product.itemCode == targetProduct.itemCode) {
-        int updatedQuantity = product.quantity + 1;
+
+        double updatedQuantity = 0;
+        double totalAmount = 0;
+
+        switch(targetProduct.productWeight){
+
+          case ProductWeight.g:
+            updatedQuantity = product.quantity + 100;
+            totalAmount = product.amount * (updatedQuantity/100);
+          case ProductWeight.kg:
+            updatedQuantity = product.quantity + 0.25;
+            totalAmount = product.amount* updatedQuantity;
+          case ProductWeight.ml:
+            updatedQuantity = product.quantity + 100;
+            totalAmount = product.amount * (updatedQuantity/100);
+          case ProductWeight.l:
+            updatedQuantity = product.quantity + 0.25;
+            totalAmount = product.amount * updatedQuantity;
+        }
+
+        // double updatedQuantity = product.quantity + 1;
         return product.copyWith(
             quantity: updatedQuantity,
-            totalAmount: updatedQuantity * product.amount);
+            // totalAmount: updatedQuantity * product.amount);
+            totalAmount: totalAmount);
       }else {
         return product;
       }
     }).toList();
     state = updatedProducts;
     // getTotalPrice();
+  }
+
+  void addProductHelper(Product targetProduct,Product product){
+    double updatedQuantity = 0;
+    double totalAmount = 0;
+
+    switch(targetProduct.productWeight){
+
+      case ProductWeight.g:
+        updatedQuantity = product.quantity + 100;
+        totalAmount = product.amount * (updatedQuantity/100);
+      case ProductWeight.kg:
+        updatedQuantity = product.quantity + 0.25;
+        totalAmount = product.amount* updatedQuantity;
+      case ProductWeight.ml:
+        updatedQuantity = product.quantity + 100;
+        totalAmount = product.amount * (updatedQuantity/100);
+      case ProductWeight.l:
+        updatedQuantity = product.quantity + 0.25;
+        totalAmount = product.amount * updatedQuantity;
+    }
   }
 
   double getTotalPrice() {
@@ -123,6 +188,19 @@ class ProductNotifier extends StateNotifier<List<Product>>{
       checkAndAddProduct(ctrl.text);
       ctrl.clear();
 
+    }
+  }
+
+  String getMeasurement(Product p){
+    switch(p.productWeight){
+      case ProductWeight.g:
+        return 'gram';
+      case ProductWeight.kg:
+        return 'Kg';
+      case ProductWeight.ml:
+        return 'ml';
+      case ProductWeight.l:
+        return 'L';
     }
   }
 

@@ -6,17 +6,17 @@ import 'package:posapp/provider/home_provider/products_provider.dart';
 import 'package:posapp/provider/product_provider/all_products_provider.dart';
 import 'package:posapp/screens/home_page/widget/widget.dart';
 import 'package:posapp/screens/price_confirm_page/price_confirm_page.dart';
+import 'package:posapp/screens/product/products_table.dart';
 import 'package:posapp/widgets/custom_textfield.dart';
 import 'package:posapp/widgets/text_style.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:io';
+// import 'dart:io';
 
-import 'package:visibility_detector/visibility_detector.dart';
+// import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../provider/product_provider/model/all_products.dart';
 
-var text = CustomTextWidget();
-var textField = CustomTextField();
+
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,8 +35,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     // });
   }
 
-  List<AllProduct> filteredProducts = [];
-  AllProduct? selectedProduct;
+  // List<AllProduct> filteredProducts = [];
+  // AllProduct? selectedProduct;
+
+  //
 
   String? _barcode;
   // late bool visible;
@@ -45,17 +47,19 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   final TextEditingController _searchController = TextEditingController();
 
-  void _filterProducts(String query) {
+  // void _filterProducts(String query) {
+  //
+  //   final allProducts = ref.read(allProductProvider);
+  //   setState(() {
+  //     filteredProducts = allProducts
+  //         .where((product) =>
+  //     product.productName.toLowerCase().contains(query.toLowerCase()) ||
+  //         product.productCode.toLowerCase().contains(query.toLowerCase()))
+  //         .toList();
+  //   });
+  // }
 
-    final allProducts = ref.read(allProductProvider);
-    setState(() {
-      filteredProducts = allProducts
-          .where((product) =>
-      product.productName.toLowerCase().contains(query.toLowerCase()) ||
-          product.productCode.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +68,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     var w = MediaQuery.sizeOf(context).width;
 
     var focusNode = FocusNode();
+
+    final filteredProduct = ref.watch(filterProductProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -107,10 +113,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         ProductTableWidget(),
                         height30,
-                        PricesWidget()
+                        const PricesWidget()
                       ],
                     ),
                     Container(
@@ -171,7 +177,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       TextField(
                                         controller: _searchController,
                                         onChanged: (value) {
-                                          _filterProducts(value);
+                                          ref.watch(allProductProvider.notifier).filterProducts(value);
+                                          // _filterProducts(value);
                                         },
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(),
@@ -254,7 +261,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ),
               ],
             ),
-            if (filteredProducts.isNotEmpty)
+            if (filteredProduct.isNotEmpty)
               Positioned(
                 top: 95, // Position below the TextField
                 // left: 56,
@@ -278,17 +285,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              ElevatedButton(onPressed: (){}, child: Text('See All')),
-                              ElevatedButton(onPressed: (){}, child: Text('EXIT')),
+                              ElevatedButton(onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder:
+                                    (BuildContext context) => ProductTableView()));
+                              }, child: Text('See All')),
+                              ElevatedButton(onPressed: (){
+                                ref.read(allProductProvider.notifier).
+                                  pressCloseOrSeeAll('close');
+                              }, child: Text('EXIT')),
                             ],
                           ),
                         ),
                         ListView.builder(
                           shrinkWrap: true,
-                          itemCount: filteredProducts.length > 5?
-                            5:filteredProducts.length,
+                          itemCount: filteredProduct.length > 5?
+                            5:filteredProduct.length,
                           itemBuilder: (context, index) {
-                            final product = filteredProducts[index];
+                            final product = filteredProduct[index];
                             return ListTile(
                               title: Text(product.productName),
                               subtitle: Text('Code: ${product.productCode}'),

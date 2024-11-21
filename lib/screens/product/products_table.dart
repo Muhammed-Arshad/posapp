@@ -15,6 +15,7 @@ class ProductTableView extends ConsumerWidget {
     List<AllProduct> products = ref.watch(allProductProvider);
 
     return Scaffold(
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -22,7 +23,7 @@ class ProductTableView extends ConsumerWidget {
             const Text('Product Table'),
             SizedBox(
               width: 750,
-              height: 600,
+              height: 500,
               child: DataTable2(
                   columnSpacing: 12,
                   horizontalMargin: 12,
@@ -35,15 +36,15 @@ class ProductTableView extends ConsumerWidget {
                     DataColumn(label: Text('SI No')),
                     DataColumn(label: Text('Product Code')),
                     DataColumn(label: Text('Product Name')),
-                    DataColumn(label: Text('Quantity')),
+                    DataColumn(label: Text('Quantity(kg/L)')),
                     DataColumn(label: Text('Price')),
                     DataColumn(label: Text('Actions')),
                   ],
                   rows: products.map(
                           (data) => DataRow(
                             color: data.productType == ProductType.veg ?
-                            WidgetStateProperty.all<Color>(Colors.blue)
-                                :WidgetStateProperty.all<Color>(Colors.red),
+                            WidgetStateProperty.all<Color>(Colors.blue.shade100)
+                                :WidgetStateProperty.all<Color>(Colors.red.shade100),
                               cells: [
                         DataCell(Text(data.no.toString())),
                         DataCell(Text(data.productCode)),

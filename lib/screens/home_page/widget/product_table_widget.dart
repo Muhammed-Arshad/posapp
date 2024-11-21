@@ -1,15 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:posapp/provider/home_provider/price_provider.dart';
-
-import '../../../provider/home_provider/model/product_model.dart';
-import '../../../provider/home_provider/products_provider.dart';
-import '../../../provider/product_provider/model/all_products.dart';
-import '../home_page.dart';
+import 'package:posapp/provider/provider.dart';
+import 'package:posapp/widgets/widget.dart';
 
 class ProductTableWidget extends ConsumerWidget {
-  const ProductTableWidget({super.key});
+  ProductTableWidget({super.key});
+
+  final text = CustomTextWidget();
 
   @override
   Widget build(BuildContext context,WidgetRef ref) {
@@ -49,25 +46,25 @@ class ProductTableWidget extends ConsumerWidget {
                         DataColumn(label: text.customTextB('SI No')),
                         DataColumn(label: text.customTextB('Item Code')),
                         DataColumn(label: text.customTextB('Item Name')),
-                        DataColumn(label: text.customTextB('Quantity')),
+                        DataColumn(label: text.customTextB('Quantity(Kg/L)')),
                         DataColumn(label: text.customTextB('Price')),
                         DataColumn(label: text.customTextB('Total Price')),
                         DataColumn(label: text.customTextB('Actions')),
                       ],
                       rows: product.map(
                             (data) => DataRow(
-                            color:
-                            data.productType == ProductType.veg?
+                            color: data.productType == ProductType.veg?
                             WidgetStateProperty.all<Color>(Colors.green.shade100):
                             WidgetStateProperty.all<Color>(Colors.orange.shade100),
                             cells: [
                               DataCell(text.customTextB((product.indexOf(data) + 1).toString())),
-                              // DataCell(text.customTextB(data.no.toString())),
                               DataCell(text.customTextB(data.itemCode)),
                               DataCell(text.customTextB(data.itemName.toString().toUpperCase())),
-                              DataCell(text.customTextB(data.quantity.toString())),
+                              DataCell(text.customTextB("${data.quantity.toString()} ${
+                                  ref.read(productProvider.notifier).getMeasurement(data)
+                              }")),
                               DataCell(text.customTextB((data.amount).toString())),
-                              DataCell(text.customTextB((data.amount * data.quantity).toString())),
+                              DataCell(text.customTextB((data.totalAmount).toString())),
                               DataCell(Row(
                                 children: [
                                   Padding(
@@ -83,17 +80,8 @@ class ProductTableWidget extends ConsumerWidget {
                                         child: IconButton(
                                           icon: Icon(Icons.add,color: Colors.white,),
                                           onPressed: () {
-                                            // setState(() {
-
-                                            // data.quantity ++;
-
-                                            // });
 
                                             ref.read(productProvider.notifier).addProductCount(data);
-
-                                            // ---- provider.getPriceTotal(provider.tableData);
-
-                                            // provider.totalAmount[0].subTotal = '100';
 
                                           },
                                         ),
@@ -104,15 +92,8 @@ class ProductTableWidget extends ConsumerWidget {
                                     icon: const Icon(Icons.remove),
                                     onPressed: () {
 
-                                      // if(data['Quantity'] <= 1){
-                                      //   return;
-                                      // }
-
                                       ref.read(productProvider.notifier).removeProductCount(data);
 
-                                      // data['Quantity']--;
-
-                                      //---- provider.getPriceTotal(provider.tableData);
                                     },
                                   ),
                                   Padding(
@@ -127,10 +108,7 @@ class ProductTableWidget extends ConsumerWidget {
                                         child: IconButton(
                                           icon: const Icon(Icons.close),
                                           onPressed: () {
-
                                             ref.read(productProvider.notifier).remove(data);
-                                            //--- provider.tableData.remove(data);
-                                            //----   provider.getPriceTotal(provider.tableData);
                                           },
                                         ),
                                       ),
