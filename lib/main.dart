@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:posapp/provider/provider.dart';
-import 'package:posapp/screens/home_page/home_page.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:posapp/provider/home_provider/model/product_model.dart';
 import 'package:posapp/screens/on_boarding/splash_screen.dart';
-import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(ProductAdapter());
+  Hive.registerAdapter(ProductTypeAdapter());
+  Hive.registerAdapter(ProductUnitAdapter());
+
+  // Open the sales box
+  await Hive.openBox<Product>('sales');
+
   runApp(ProviderScope(child: const MyApp()));
 }
 

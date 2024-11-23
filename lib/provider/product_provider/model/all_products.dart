@@ -1,25 +1,27 @@
 import 'package:equatable/equatable.dart';
 
-enum ProductType {veg, nonVeg, fruits, other}
-enum ProductWeight { g, kg, ml, l }
+import '../../home_provider/model/product_model.dart';
+
+// enum ProductType {veg, nonVeg, fruits, other}
+// enum ProductUnit { g, kg, ml, l }
 
 class AllProduct extends Equatable {
   final int no;
   final String productCode;
   final String productName;
   final int quantity;
-  final double amount;
+  final double price;
   final ProductType productType;
-  final ProductWeight productWeight;
+  final ProductUnit productUnit;
 
   const AllProduct({
     required this.no,
     required this.productCode,
     required this.productName,
     required this.quantity,
-    required this.amount,
+    required this.price,
     this.productType = ProductType.veg,
-    this.productWeight = ProductWeight.g
+    this.productUnit = ProductUnit.g
   });
 
   AllProduct copyWith({
@@ -27,22 +29,22 @@ class AllProduct extends Equatable {
     String? productCode,
     String? productName,
     int? quantity,
-    double? amount,
+    double? price,
     ProductType? productType,
-    ProductWeight? productWeight,
+    ProductUnit? productUnit,
   }) {
     return AllProduct(
       no: no ?? this.no,
       productCode: productCode ?? this.productCode,
       productName: productName ?? this.productName,
       quantity: quantity ?? this.quantity,
-      amount: amount ?? this.amount,
+      price: price ?? this.price,
       productType: productType ?? this.productType,
-      productWeight: productWeight ?? this.productWeight,
+      productUnit: productUnit ?? this.productUnit,
     );
   }
 
   @override
-  List<Object?> get props => [no, productCode, productName, quantity, amount,
-    productType,productWeight];
+  List<Object?> get props => [no, productCode, productName, quantity, price,
+    productType,productUnit];
 }

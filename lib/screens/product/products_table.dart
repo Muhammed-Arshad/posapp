@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:posapp/provider/product_provider/model/all_products.dart';
 
+import '../../provider/home_provider/model/product_model.dart';
 import '../../provider/product_provider/all_products_provider.dart';
 
 class ProductTableView extends ConsumerWidget {
@@ -50,7 +51,7 @@ class ProductTableView extends ConsumerWidget {
                         DataCell(Text(data.productCode)),
                         DataCell(Text(data.productName)),
                         DataCell(Text(data.quantity.toString())),
-                        DataCell(Text(data.amount.toString())),
+                        DataCell(Text(data.price.toString())),
                                 DataCell(Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                                   child: Container(

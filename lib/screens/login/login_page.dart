@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:posapp/screens/home_page/home_page.dart';
+import 'package:posapp/screens/home/home_page.dart';
 
 import '../../constants/colors.dart';
 

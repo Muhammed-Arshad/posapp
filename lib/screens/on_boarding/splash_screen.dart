@@ -1,13 +1,7 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:posapp/screens/home_page/home_page.dart';
-import 'package:provider/provider.dart';
+import '../home/home_page.dart';
 
-import '../../provider/home_provider/home_provider.dart';
-import '../login/login_page.dart';
-import '../product/products_table.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

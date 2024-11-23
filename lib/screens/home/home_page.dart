@@ -4,7 +4,7 @@ import 'package:posapp/constants/sized_box.dart';
 import 'package:posapp/provider/home_provider/price_provider.dart';
 import 'package:posapp/provider/home_provider/products_provider.dart';
 import 'package:posapp/provider/product_provider/all_products_provider.dart';
-import 'package:posapp/screens/home_page/widget/widget.dart';
+import 'package:posapp/screens/home/widget/widget.dart';
 import 'package:posapp/screens/price_confirm_page/price_confirm_page.dart';
 import 'package:posapp/screens/product/products_table.dart';
 import 'package:posapp/widgets/custom_textfield.dart';
@@ -27,12 +27,24 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
 
+  var focusNode = FocusNode();
+  // var focusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
+    focusNode = ref.read(productProvider.notifier).focusNode;
     // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   filteredProducts = ref.read(allProductProvider);
+    //   focusNode = ref.read(productProvider.notifier).focusNode;
+    //   // focusNode.requestFocus();
     // });
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    focusNode.dispose();
   }
 
   // List<AllProduct> filteredProducts = [];
@@ -67,8 +79,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     var h = MediaQuery.sizeOf(context).height;
     var w = MediaQuery.sizeOf(context).width;
 
-    var focusNode = FocusNode();
-
+    ref.read(productProvider.notifier).focusNode.requestFocus();
     final filteredProduct = ref.watch(filterProductProvider);
 
     return Scaffold(
@@ -305,7 +316,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             return ListTile(
                               title: Text(product.productName),
                               subtitle: Text('Code: ${product.productCode}'),
-                              trailing: Text('\$${product.amount}'),
+                              trailing: Text('\$${product.price}'),
                               onTap: () {
                                 // Handle product selection
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:posapp/constants/sized_box.dart';
 import 'package:posapp/provider/provider.dart';
-import 'package:posapp/screens/home_page/widget/widget.dart';
+import 'package:posapp/screens/home/widget/widget.dart';
 import 'package:posapp/screens/price_confirm_page/widget/widget.dart';
 import 'package:posapp/widgets/button_widget.dart';
 
@@ -62,165 +62,6 @@ class _ConfirmDialogPageState extends State<ConfirmDialogPage> {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Consumer(
-                    builder: (BuildContext context, WidgetRef ref, Widget? child) {
-
-                      final paidVia = ref.watch(paidViaProvider);
-
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-                              PriceTextField(
-                                readOnly: true,
-                                ctrl: amountRcvdCtrl,
-                                focusNode: amountRcvdFocus,
-                                title: 'Received'),
-                              width15,
-                              PriceTextField(
-                                readOnly: true,
-                                ctrl: amountChangeCtrl,
-                                headerClr: Colors.orange,
-                                title: 'Change'),
-                              width15,
-                              PriceTextField(
-                                ctrl: rcvdByCashCtrl,
-                                title: switch(ref.watch(paidViaProvider)){
-                                  PaidVia.cash => 'Received By Cash',
-                                  PaidVia.card => 'Received By Card',
-                                  PaidVia.cardPlusCash => 'Received By Cash'},
-                                onChanged: (val){
-                                  getPriceWithCash(null, ref.read(priceProvider), val);
-                                },
-                                onTap: (){
-                                  if(rcvdByCashCtrl.text == '0'){
-                                    rcvdByCashCtrl.clear();
-                                  }
-                                },
-                                focusNode: rcvdByCashFocus,
-                              ),
-                              width15,
-                              PriceTextField(
-                                ctrl: rcvdByCardCtrl,
-                                title: ref.watch(paidViaProvider) == PaidVia.cardPlusCash?
-                                'Received By Card':'',
-                                focusNode: rcvdByCardFocus,
-                                readOnly: paidVia == PaidVia.cash
-                                    || paidVia == PaidVia.card?true:false,
-                                onChanged: (val) {
-                                  getPriceWithCard(null, ref.read(priceProvider), val);
-                                },
-                                onTap: () {
-
-                                  if((ref.read(paidViaProvider) == PaidVia.cash ||
-                                      ref.read(paidViaProvider) == PaidVia.card)){
-                                    rcvdByCashFocus.requestFocus();
-                                  }
-
-                                  if(rcvdByCardCtrl.text == '0'){
-                                    rcvdByCardCtrl.clear();
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          height20,
-                          Row(
-                            children: [
-                              PriceTextField(
-                                ctrl: currencyCtrl,
-                                readOnly: true,
-                                title: 'Currency',
-                              ),
-                              width15,
-                              PriceTextField(
-                                ctrl: rateCtrl,
-                                readOnly: true,
-                                title: 'Rate',
-                              ),
-                              width15,
-                              PriceTextField(
-                                ctrl: rcvdCurrCtrl,
-                                readOnly: true,
-                                title: 'Received Curr',
-                              ),
-                              width15,
-                              PriceTextField(
-                                ctrl: cardCtrl,
-                                readOnly: true,
-                                title: 'Received by Card',
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                  height30,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          Consumer(
-                            builder: (BuildContext context, WidgetRef ref, Widget? child) {
-
-                              TotalPriceModel price = ref.read(priceProvider);
-
-                              return SizedBox(
-                                height: 300,
-                                width: 300,
-                                child: GridView.builder(
-
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        childAspectRatio: 1.5
-                                    ),
-                                    itemCount: numbers.length,
-                                    itemBuilder: (BuildContext context, int i) {
-
-                                      final num = numbers[i];
-                                      return buttonContainer(num, bgClr: Color(0xfff0f0f0), onTap: (){
-
-                                        if(rcvdByCashFocus.hasFocus){
-                                          rcvdByCashCtrl.selection =
-                                              TextSelection.collapsed(offset: rcvdByCashCtrl.text.length);
-                                          getPriceWithCash(i, price, num);
-                                        }else if(rcvdByCardFocus.hasFocus
-                                            && ref.read(paidViaProvider) == PaidVia.cardPlusCash){
-                                          getPriceWithCard(i, price, num);
-
-                                        }
-
-                                      });
-                                    }),
-                              );
-                            },
-                          ),
-                          MainButtons()
-                        ],
-                      ),
-                      CardOrCashButton()
-                    ],
-                  )
-
-                  // Add your custom content here
-                ],
-              ),
-            ),
-            Container(
-              height: 800,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.blue.shade50,width: 5,)
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   BillAmount(),
@@ -230,6 +71,170 @@ class _ConfirmDialogPageState extends State<ConfirmDialogPage> {
                 ],
               ),
             ),
+            Container(
+              width: MediaQuery.sizeOf(context).width * 0.6,
+              height: 800,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.blue.shade50,width: 5,)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 50.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Consumer(
+                      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+
+                        final paidVia = ref.watch(paidViaProvider);
+
+                        return Column(
+                          children: [
+                            Row(
+                              children: [
+                                PriceTextField(
+                                  readOnly: true,
+                                  ctrl: amountRcvdCtrl,
+                                  focusNode: amountRcvdFocus,
+                                  title: 'Received'),
+                                width15,
+                                PriceTextField(
+                                  readOnly: true,
+                                  ctrl: amountChangeCtrl,
+                                  headerClr: Colors.orange,
+                                  title: 'Change'),
+                                width15,
+                                PriceTextField(
+                                  ctrl: rcvdByCashCtrl,
+                                  title: switch(ref.watch(paidViaProvider)){
+                                    PaidVia.cash => 'Received By Cash',
+                                    PaidVia.card => 'Received By Card',
+                                    PaidVia.cardPlusCash => 'Received By Cash'},
+                                  onChanged: (val){
+                                    getPriceWithCash(null, ref.read(priceProvider), val);
+                                  },
+                                  onTap: (){
+                                    if(rcvdByCashCtrl.text == '0'){
+                                      rcvdByCashCtrl.clear();
+                                    }
+                                  },
+                                  focusNode: rcvdByCashFocus,
+                                ),
+                                width15,
+                                PriceTextField(
+                                  ctrl: rcvdByCardCtrl,
+                                  title: ref.watch(paidViaProvider) == PaidVia.cardPlusCash?
+                                  'Received By Card':'',
+                                  focusNode: rcvdByCardFocus,
+                                  readOnly: paidVia == PaidVia.cash
+                                      || paidVia == PaidVia.card?true:false,
+                                  onChanged: (val) {
+                                    getPriceWithCard(null, ref.read(priceProvider), val);
+                                  },
+                                  onTap: () {
+
+                                    if((ref.read(paidViaProvider) == PaidVia.cash ||
+                                        ref.read(paidViaProvider) == PaidVia.card)){
+                                      rcvdByCashFocus.requestFocus();
+                                    }
+
+                                    if(rcvdByCardCtrl.text == '0'){
+                                      rcvdByCardCtrl.clear();
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                            height20,
+                            Row(
+                              children: [
+                                PriceTextField(
+                                  ctrl: currencyCtrl,
+                                  readOnly: true,
+                                  title: 'Currency',
+                                ),
+                                width15,
+                                PriceTextField(
+                                  ctrl: rateCtrl,
+                                  readOnly: true,
+                                  title: 'Rate',
+                                ),
+                                width15,
+                                PriceTextField(
+                                  ctrl: rcvdCurrCtrl,
+                                  readOnly: true,
+                                  title: 'Received Curr',
+                                ),
+                                width15,
+                                PriceTextField(
+                                  ctrl: cardCtrl,
+                                  readOnly: true,
+                                  title: 'Received by Card',
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    height30,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CardOrCashButton(),
+                        Column(
+                          children: [
+                            Consumer(
+                              builder: (BuildContext context, WidgetRef ref, Widget? child) {
+
+                                TotalPriceModel price = ref.read(priceProvider);
+
+                                return SizedBox(
+                                  height: 300,
+                                  width: 300,
+                                  child: GridView.builder(
+
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3,
+                                          childAspectRatio: 1.5
+                                      ),
+                                      itemCount: numbers.length,
+                                      itemBuilder: (BuildContext context, int i) {
+
+                                        final num = numbers[i];
+                                        return buttonContainer(num, bgClr: Color(0xfff0f0f0), onTap: (){
+
+                                          if(rcvdByCashFocus.hasFocus){
+                                            rcvdByCashCtrl.selection =
+                                                TextSelection.collapsed(offset: rcvdByCashCtrl.text.length);
+                                            getPriceWithCash(i, price, num);
+                                          }else if(rcvdByCardFocus.hasFocus
+                                              && ref.read(paidViaProvider) == PaidVia.cardPlusCash){
+                                            getPriceWithCard(i, price, num);
+
+                                          }
+
+                                        });
+                                      }),
+                                );
+                              },
+                            ),
+                            MainButtons()
+                          ],
+                        ),
+                      ],
+                    )
+
+                    // Add your custom content here
+                  ],
+                ),
+              ),
+            ),
+
           ],
         ),
       ),

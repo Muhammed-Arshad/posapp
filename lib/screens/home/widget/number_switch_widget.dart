@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:posapp/screens/home/widget/quantity_dialogbox.dart';
+import 'package:posapp/screens/sales/sales_view.dart';
 
 import '../../../provider/home_provider/products_provider.dart';
 import 'custom_container.dart';
@@ -11,6 +13,8 @@ class NumberSwitchWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,WidgetRef ref) {
+
+
     return GridView(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -21,7 +25,10 @@ class NumberSwitchWidget extends ConsumerWidget {
       children: [
         buttonContainer('PRINT', textClr: Colors.white, onTap: (){
         }),
-        buttonContainer('SUBTOTAL', textClr:Colors.white, onTap: (){}),
+        buttonContainer('SUBTOTAL', textClr:Colors.white, onTap: (){
+          Navigator.push(context, MaterialPageRoute(builder:
+              (BuildContext context) => SalesView()));
+        }),
         buttonContainer('REFUND', textClr:Colors.white, onTap: (){}),
         buttonContainer('EXIT', textClr: Colors.white, onTap: (){}),
 
@@ -35,7 +42,11 @@ class NumberSwitchWidget extends ConsumerWidget {
         buttonContainer('9', bgClr: Color(0xfff0f0f0), onTap: (){
           ref.read(productProvider.notifier).clicked('9',barcodeText);
         }),
-        buttonContainer('QTY', textClr: Colors.white,bgClr: Color(0xff0000ff), onTap: (){}),
+        buttonContainer('QTY', textClr: Colors.white,bgClr: Color(0xff0000ff), onTap: (){
+          if(ref.read(productProvider).isNotEmpty){
+            showQuantityDialog(context);
+          }
+        }),
 
         buttonContainer('4', bgClr: Color(0xfff0f0f0), onTap: (){
           ref.read(productProvider.notifier).clicked('4',barcodeText);

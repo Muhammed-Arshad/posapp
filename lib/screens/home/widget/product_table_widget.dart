@@ -58,12 +58,13 @@ class ProductTableWidget extends ConsumerWidget {
                             WidgetStateProperty.all<Color>(Colors.orange.shade100),
                             cells: [
                               DataCell(text.customTextB((product.indexOf(data) + 1).toString())),
-                              DataCell(text.customTextB(data.itemCode)),
-                              DataCell(text.customTextB(data.itemName.toString().toUpperCase())),
+                              DataCell(text.customTextB(data.productCode)),
+                              DataCell(text.customTextB(data.productName.toString().toUpperCase())),
                               DataCell(text.customTextB("${data.quantity.toString()} ${
-                                  ref.read(productProvider.notifier).getMeasurement(data)
+                                  ref.read(productProvider.notifier).getQuantityUnit(data)
                               }")),
-                              DataCell(text.customTextB((data.amount).toString())),
+                              DataCell(text.customTextB("${(data.price).toString()} "
+                                  "${ref.read(productProvider.notifier).getFixedUnit(data)}")),
                               DataCell(text.customTextB((data.totalAmount).toString())),
                               DataCell(Row(
                                 children: [

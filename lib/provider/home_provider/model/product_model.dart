@@ -1,56 +1,137 @@
 import 'package:equatable/equatable.dart';
 import 'package:posapp/provider/product_provider/model/all_products.dart';
+import 'package:hive/hive.dart';
+part 'product_model.g.dart';
 
-class Product extends Equatable {
+@HiveType(typeId: 1) // Use a unique typeId for each enum
+enum ProductType {
+  @HiveField(0)
+  veg,
+
+  @HiveField(1)
+  nonVeg,
+
+  @HiveField(2)
+  fruits,
+
+  @HiveField(3)
+  other,
+}
+
+@HiveType(typeId: 2) // Use a unique typeId for each enum
+enum ProductUnit {
+  @HiveField(0)
+  g,
+
+  @HiveField(1)
+  kg,
+
+  @HiveField(2)
+  ml,
+
+  @HiveField(3)
+  l,
+}
+
+@HiveType(typeId: 0) // Use unique typeId for each class.
+class Product extends HiveObject {
+  @HiveField(0)
   final int no;
-  final String itemCode;
-  final String itemName;
-  final double quantity;
-  final double amount;
-  final double totalAmount;
-  final ProductType productType;
-  final ProductWeight productWeight;
 
-  const Product({
+  @HiveField(1)
+  final String productCode;
+
+  @HiveField(2)
+  final String productName;
+
+  @HiveField(3)
+  final double quantity;
+
+  @HiveField(4)
+  final double price;
+
+  @HiveField(5)
+  final double fixedPrice;
+
+  @HiveField(6)
+  final ProductUnit fixedUnit;
+
+  @HiveField(7)
+  final double totalAmount;
+
+  @HiveField(8)
+  final ProductType productType;
+
+  @HiveField(9)
+  final ProductUnit productUnit;
+
+  @HiveField(10)
+  final DateTime? dateTime;
+
+
+// class Product extends Equatable {
+//   final int no;
+//   final String productCode;
+//   final String productName;
+//   final double quantity;
+//   final double price;
+//   final double fixedPrice;
+//   final ProductUnit fixedUnit;
+//   final double totalAmount;
+//   final ProductType productType;
+//   final ProductUnit productUnit;
+//   final DateTime? dateTime;
+
+  Product({
     required this.no,
-    required this.itemCode,
-    required this.itemName,
+    required this.productCode,
+    required this.productName,
     required this.quantity,
-    required this.amount,
+    required this.price,
+    required this.fixedPrice,
+    required this.fixedUnit,
     required this.totalAmount,
     this.productType = ProductType.veg,
-    this.productWeight = ProductWeight.g,
+    this.productUnit = ProductUnit.g,
+    this.dateTime
   });
 
   Product copyWith({
     int? no,
-    String? itemCode,
-    String? itemName,
+    String? productCode,
+    String? productName,
     double? quantity,
-    double? amount,
+    double? price,
+    double? fixedPrice,
+    ProductUnit? fixedUnit,
     double? totalAmount,
-    ProductWeight? productWeight,
+    ProductType? productType,
+    ProductUnit? productUnit,
+    DateTime? dateTime,
   }) {
     return Product(
       no: no ?? this.no,
-      itemCode: itemCode ?? this.itemCode,
-      itemName: itemName ?? this.itemName,
+      productCode: productCode ?? this.productCode,
+      productName: productName ?? this.productName,
       quantity: quantity ?? this.quantity,
-      amount: amount ?? this.amount,
+      price: price ?? this.price,
+      fixedPrice: fixedPrice ?? this.fixedPrice,
+      fixedUnit: fixedUnit ?? this.fixedUnit,
       totalAmount: totalAmount ?? this.totalAmount,
-      productType: productType,
-      productWeight: productWeight ?? this.productWeight,
+      productType: productType ?? this.productType,
+      productUnit: productUnit ?? this.productUnit,
+      dateTime: dateTime ?? this.dateTime,
     );
   }
 
   @override
-  List<Object?> get props => [no, itemCode, itemName, quantity,
-    amount, totalAmount,productType,productWeight];
+  List<Object?> get props => [no, productCode, productName, quantity,
+    price, fixedPrice, fixedUnit, totalAmount,productType,productUnit,dateTime];
 
   @override
   String toString() {
-    return 'Product(no: $no, itemCode: $itemCode, itemName: $itemName,'
-        ' quantity: $quantity, amount: $amount, totalAmount: $totalAmount,'
-        ' productType: $productType, productWeight: $productWeight)';
+    return 'Product(no: $no, itemCode: $productCode, productName: $productName,'
+        ' quantity: $quantity, amount: $price, totalAmount: $totalAmount,'
+        ' productType: $productType, productWeight: $productUnit)';
   }
 }
