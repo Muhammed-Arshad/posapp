@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:posapp/provider/home_provider/model/product_model.dart';
-import 'package:posapp/provider/product_provider/model/all_products.dart';
+import 'package:posapp/provider/sale_provider/sales_provider.dart';
 
 import '../../../provider/home_provider/products_provider.dart';
 
@@ -119,6 +119,79 @@ void showQuantityDialog(BuildContext context) {
             ],
           );
         });
+    },
+  );
+}
+
+void showEditProductDialog(BuildContext context,index, Product product) {
+  final TextEditingController quantityController = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Consumer(
+          builder: (BuildContext context, WidgetRef ref, Widget? child) {
+
+            // late final Product lastProduct;
+            //
+            // final product = ref.watch(productProvider);
+            // if(product.isNotEmpty){
+            //   lastProduct = ref.read(productProvider).last;
+            //   quantityController.text = lastProduct.quantity.toString();
+            // }
+
+
+            return AlertDialog(
+              title: Text("Enter Quantity"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: quantityController,
+                    decoration: InputDecoration(
+                        labelText: "Quantity (Kg/L)",
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                            onPressed: (){
+                              quantityController.clear();
+                            },
+                            icon: Icon(Icons.close))
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Cancel"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // Handle the values here
+                    // updatedProduct.copyWith(
+                    //     // quantity: double.parse(quantityController.text)
+                    //     quantity: 2
+                    // );
+
+                    final updatedProduct = product.copyWith(
+                      // productName: nameController.text,
+                      quantity: double.tryParse(quantityController.text) ?? product.quantity,
+                      // price: double.tryParse(priceController.text) ?? product.price,
+                    );
+
+                    print(updatedProduct);
+                    ref.read(salesProvider.notifier).editProduct(index, updatedProduct);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Submit"),
+                ),
+              ],
+            );
+          });
     },
   );
 }

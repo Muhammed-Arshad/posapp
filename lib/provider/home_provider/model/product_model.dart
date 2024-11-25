@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-import 'package:posapp/provider/product_provider/model/all_products.dart';
 import 'package:hive/hive.dart';
 part 'product_model.g.dart';
 
@@ -67,20 +65,6 @@ class Product extends HiveObject {
 
   @HiveField(10)
   final DateTime? dateTime;
-
-
-// class Product extends Equatable {
-//   final int no;
-//   final String productCode;
-//   final String productName;
-//   final double quantity;
-//   final double price;
-//   final double fixedPrice;
-//   final ProductUnit fixedUnit;
-//   final double totalAmount;
-//   final ProductType productType;
-//   final ProductUnit productUnit;
-//   final DateTime? dateTime;
 
   Product({
     required this.no,

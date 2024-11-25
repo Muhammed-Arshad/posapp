@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class DatePickerField extends StatelessWidget {
   final String labelText;
-  // final VoidCallback onTap;
-  final TextEditingController ctrl;
+  final IconData icon;
+  final DateTime? selectedDate;
+  final VoidCallback onTap;
 
-  const CustomTextField({
+  const DatePickerField({
     Key? key,
     required this.labelText,
-    // required this.onTap,
-    required this.ctrl,
+    required this.icon,
+    required this.selectedDate,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -19,7 +21,7 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(fontSize: 16, color: Colors.grey[700]),
-        // suffixIcon: Icon(icon, color: Colors.grey[600]),
+        suffixIcon: Icon(icon, color: Colors.grey[600]),
         filled: true,
         fillColor: Colors.grey[100],
         enabledBorder: OutlineInputBorder(
@@ -32,8 +34,12 @@ class CustomTextField extends StatelessWidget {
         ),
         contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       ),
-      // onTap: onTap,
-      controller: ctrl,
+      onTap: onTap,
+      controller: TextEditingController(
+        text: selectedDate != null
+            ? selectedDate!.toLocal().toString().split(' ')[0]
+            : '',
+      ),
     );
   }
 }

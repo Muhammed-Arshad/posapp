@@ -48,6 +48,8 @@ dependencies:
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.1
   build_runner: ^2.4.13
+  macos_ui: ^2.0.9
+  toastification: ^2.3.0
 
 dev_dependencies:
   flutter_test:

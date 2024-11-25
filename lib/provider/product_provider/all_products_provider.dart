@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive/hive.dart';
 
+import '../../constants/utility.dart';
 import '../home_provider/model/product_model.dart';
 import 'model/all_products.dart';
 
 class AllProductNotifier extends StateNotifier<List<AllProduct>>{
   Ref ref;
-  AllProductNotifier(this.ref): super([
+  final Box<AllProduct> _stocksBox;
+  AllProductNotifier(this.ref, this._stocksBox): super([
     AllProduct(no: 1, productCode: "123", productName: "Sugar", quantity: 1, price: 60, productType: ProductType.other, productUnit: ProductUnit.kg),
     AllProduct(no: 2, productCode: "124", productName: "Chilly", quantity: 100, price: 40, productType: ProductType.other, productUnit: ProductUnit.g),
     AllProduct(no: 3, productCode: "125", productName: "Tomato", quantity: 1, price: 70, productType: ProductType.veg, productUnit: ProductUnit.kg),
@@ -27,8 +31,58 @@ class AllProductNotifier extends StateNotifier<List<AllProduct>>{
     AllProduct(no: 19, productCode: "141", productName: "Broccoli", quantity: 1, price: 80, productType: ProductType.veg, productUnit: ProductUnit.kg),
     AllProduct(no: 20, productCode: "142", productName: "Cheese", quantity: 100, price: 120, productType: ProductType.other, productUnit: ProductUnit.g),
     AllProduct(no: 21, productCode: "143", productName: "Yogurt", quantity: 100, price: 20, productType: ProductType.other, productUnit: ProductUnit.ml),
-
+    ..._stocksBox.values
   ]);
+
+  // void addToStock(AllProduct p,BuildContext context){
+  //   _stocksBox.add(p);
+  //   state = [...state,..._stocksBox.values.toList()];
+  //   print('ADD STOCK SUCCEESS');
+  //   showToast(context, 'Success', "User Added Successfully");
+  // }
+
+  void addToStock(AllProduct p, BuildContext context) {
+    // Check if a product with the same productCode exists
+    final existingIndex = _stocksBox.values.toList()
+        .indexWhere((product) => product.productCode == p.productCode);
+
+    if (existingIndex != -1) {
+      // If product exists, update the quantity
+      final existingProduct = _stocksBox.getAt(existingIndex);
+
+      if (existingProduct != null) {
+        final updatedProduct = AllProduct(
+          no: existingProduct.no,
+          productCode: existingProduct.productCode,
+          productName: existingProduct.productName,
+          quantity: existingProduct.quantity + p.quantity, // Update quantity
+          price: existingProduct.price,
+          productType: existingProduct.productType,
+          productUnit: existingProduct.productUnit,
+          dateTime: existingProduct.dateTime,
+        );
+
+        _stocksBox.putAt(existingIndex, updatedProduct); // Update the product
+        print('UPDATED STOCK SUCCESS');
+        showToast(context, 'Success', "Stock Updated Successfully");
+      }
+    } else {
+      // If product does not exist, add it as a new product
+      _stocksBox.add(p);
+      print('ADD STOCK SUCCESS');
+      showToast(context, 'Success', "Product Added Successfully");
+    }
+
+    // Update the state
+    // state = [...state, ..._stocksBox.values.toList()];
+    state = _stocksBox.values.toList();
+  }
+
+
+  void clearSales() {
+    state = [];
+    _stocksBox.clear();
+  }
 
 
   void filterProducts(String query) {
@@ -53,7 +107,8 @@ class AllProductNotifier extends StateNotifier<List<AllProduct>>{
 }
 
 final allProductProvider = StateNotifierProvider<AllProductNotifier, List<AllProduct>>((ref) {
-  return AllProductNotifier(ref);
+  final stocksBox = Hive.box<AllProduct>('stocks');
+  return AllProductNotifier(ref,stocksBox);
 });
 
 final productByCodeProvider = Provider.family<AllProduct, String>((ref, productCode) {

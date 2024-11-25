@@ -17,6 +17,7 @@ Widget customContainer(String amount, {Color color = Colors.black}) {
 
 Widget buttonContainer(text,
     {Color textClr = Colors.black,
+      double height = 35,
     Color bgClr = const Color(0xff00008b),
     required VoidCallback onTap}) {
   return InkWell(
@@ -30,7 +31,7 @@ Widget buttonContainer(text,
             borderRadius: BorderRadius.all(Radius.circular(15.0))),
         elevation: 5.0,
         minWidth: 200.0,
-        height: 35,
+        height: height,
         color: bgClr,
         child:
             Center(child: CustomTextWidget().customTextMB(text, color: textClr)),

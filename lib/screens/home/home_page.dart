@@ -7,7 +7,6 @@ import 'package:posapp/provider/product_provider/all_products_provider.dart';
 import 'package:posapp/screens/home/widget/widget.dart';
 import 'package:posapp/screens/price_confirm_page/price_confirm_page.dart';
 import 'package:posapp/screens/product/products_table.dart';
-import 'package:posapp/widgets/custom_textfield.dart';
 import 'package:posapp/widgets/text_style.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'dart:io';
@@ -15,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../provider/product_provider/model/all_products.dart';
+import '../sales/sales_view.dart';
 
 
 
@@ -131,9 +131,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     Container(
-                      // color: Colors.blue.shade200,
                       color: Colors.blue.shade100,
-                      height: h,
+                      // height: h,
                       width: w*0.4,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -263,6 +262,34 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 height: 60,
                                 child: Center(child: CustomTextWidget().customTextB('ENTER',color: Colors.white)),
                               ),
+                            ),
+                            height30,
+                            Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    buttonContainer(
+                                      height: 70,
+                                        'NONE', textClr: Colors.white, onTap: (){}),
+                                    buttonContainer(
+                                      height: 70,
+                                        'NONE', textClr:Colors.white, onTap: (){}),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    buttonContainer(
+                                      height: 70,
+                                        'ADMIN', textClr:Colors.white, onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(builder:
+                                          (BuildContext context) => SalesView()));
+                                    }),
+                                    buttonContainer(
+                                      height: 70,
+                                        'NONE', textClr: Colors.white, onTap: (){}),
+                                  ],
+                                ),
+                              ],
                             )
                           ],
                         ),
